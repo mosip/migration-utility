@@ -42,9 +42,6 @@ jobs:
           - SERVICE_LOCATION: 'pms-115-120/utility'
             SERVICE_NAME: 'pms-migration-utility'
             BUILD_ARTIFACT: 'utility'
-          - SERVICE_LOCATION: 'pre-reg-113-115'
-            SERVICE_NAME: 'pre-reg-113-115'
-            BUILD_ARTIFACT: 'ReEncryptUtility'
       fail-fast: false
     name: ${{ matrix.SERVICE_NAME }}
     uses: mosip/kattu/.github/workflows/docker-build.yml@master
