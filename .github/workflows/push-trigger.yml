@@ -68,7 +68,7 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
   build-dockers-pre-reg-113-115:
-    needs:   build-dockers-pre-reg-113-115
+    needs: build-dockers-pre-reg-113-115
     strategy:
       matrix:
         include:
