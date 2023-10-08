@@ -34,6 +34,27 @@ jobs:
       GPG_SECRET: ${{ secrets.GPG_SECRET }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
+  build-dockers:
+    needs: build-maven-migration-utility
+    strategy:
+      matrix:
+        include:
+          - SERVICE_LOCATION: 'pms-115-120/utility'
+            SERVICE_NAME: 'pms-migration-utility'
+            BUILD_ARTIFACT: 'utility'
+      fail-fast: false
+    name: ${{ matrix.SERVICE_NAME }}
+    uses: mosip/kattu/.github/workflows/docker-build.yml@master
+    with:
+      SERVICE_LOCATION: ${{ matrix.SERVICE_LOCATION }}
+      SERVICE_NAME: ${{ matrix.SERVICE_NAME }}
+      BUILD_ARTIFACT: ${{ matrix.BUILD_ARTIFACT }}
+    secrets:
+      DEV_NAMESPACE_DOCKER_HUB: ${{ secrets.DEV_NAMESPACE_DOCKER_HUB }}
+      ACTOR_DOCKER_HUB: ${{ secrets.ACTOR_DOCKER_HUB }}
+      RELEASE_DOCKER_HUB: ${{ secrets.RELEASE_DOCKER_HUB }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
   build-maven-pre-reg-113-115:
     uses: mosip/kattu/.github/workflows/maven-build.yml@master
     with:
@@ -46,14 +67,11 @@ jobs:
       GPG_SECRET: ${{ secrets.GPG_SECRET }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
-  build-dockers:
-    needs: build-maven-migration-utility
+  build-dockers-pre-reg-113-115:
+    needs: build-maven-pre-reg-113-115
     strategy:
       matrix:
         include:
-          - SERVICE_LOCATION: 'pms-115-120/utility'
-            SERVICE_NAME: 'pms-migration-utility'
-            BUILD_ARTIFACT: 'utility'
           - SERVICE_LOCATION: 'pre-reg-113-115'
             SERVICE_NAME: 'pre-reg-113-115'
             BUILD_ARTIFACT: 'ReEncryptUtility'
