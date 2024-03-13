@@ -81,7 +81,7 @@ RUN mkdir -p ${loader_path}
 
 ENV loader_path_env=${loader_path}
 
-COPY ./target/Utility-0.0.1-SNAPSHOT.jar   Utility-0.0.1-SNAPSHOT.jar
+COPY ./target/Utility-1.0.0-SNAPSHOT.jar   Utility-1.0.0-SNAPSHOT.jar
 
 # change permissions of file inside working dir
 RUN chown -R ${container_user}:${container_user} /home/${container_user}
