@@ -91,4 +91,4 @@ USER ${container_user_uid}:${container_user_gid}
 
 
 CMD wget -q --show-progress "${iam_adapter_url_env}" -O "${loader_path_env}"/kernel-auth-adapter.jar; \
-    java -jar -Dloader.path="${loader_path_env}" -Dspring.cloud.config.label="${spring_config_label_env}" -Dspring.cloud.config.name="${spring_config_name_env}" -Dspring.profiles.active="${active_profile_env}" -Dspring.cloud.config.uri="${spring_config_url_env}" Utility-0.0.1-SNAPSHOT.jar;
+    java -jar -Dloader.path="${loader_path_env}" -Dspring.cloud.config.label="${spring_config_label_env}" -Dspring.cloud.config.name="${spring_config_name_env}" -Dspring.profiles.active="${active_profile_env}" -Dspring.cloud.config.uri="${spring_config_url_env}" Utility-1.0.0-SNAPSHOT.jar;
