@@ -124,7 +124,7 @@ public class PMSDataMigrationService {
 		Map<String,String> partnerDomainMap = certUtil.getPartnerDomainMap();
 		for(Partner partner : partners) {
 			if(allowedPartnerTypes.contains(partner.getPartnerTypeCode()) && partner.getCertificateAlias()!=null) {
-				String signedPartnerCert = certUtil.getCertificate("PMS",partner.getId());
+				String signedPartnerCert = certUtil.getCertificate("PARTNER",partner.getId());
 				String partnerDomain = partnerDomainMap.containsKey(partner.getPartnerTypeCode())?
 						partnerDomainMap.get(partner.getPartnerTypeCode()):partnerDomainMap.get("Auth_Partner");
 				LOGGER.info("Publishing the data for Partner :: " + partner.getId());
