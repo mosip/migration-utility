@@ -66,7 +66,7 @@ public class CertUtil {
 	
 	public String getPmsCert() throws Exception {
 		if(pmsCert==null) {
-			pmsCert = getCertificate("PMS",null);
+			pmsCert = getCertificate("PARTNER",null);
 		}
 		return pmsCert;
 	}
