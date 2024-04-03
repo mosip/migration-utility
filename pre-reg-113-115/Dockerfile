@@ -12,30 +12,26 @@ LABEL commit_hash=${COMMIT_HASH}
 LABEL commit_id=${COMMIT_ID}
 LABEL build_time=${BUILD_TIME}
 
-# Update and install dependencies
-RUN apt-get update \
-    && apt-get -y upgrade \
-    && apt-get -y install unzip
-
 # Define default user and group
 ARG container_user=mosip
 ARG container_user_group=mosip
 ARG container_user_uid=1001
 ARG container_user_gid=1001
 
-# Create the user and group
-RUN groupadd -g ${container_user_gid} ${container_user_group} \
-    && useradd -u ${container_user_uid} -g ${container_user_gid} -m -s /bin/bash ${container_user}
-
-# Set ownership of home directory
-RUN chown -R ${container_user}:${container_user} /home/${container_user}
-
 # Set the working directory
 ENV work_dir=/
 
 # Create directory for additional JARs
 ARG loader_path=${work_dir}/additional_jars/
-RUN mkdir -p ${loader_path}
+
+# Update, install dependencies, Create the user and group
+RUN apt-get update \
+&& apt-get -y upgrade \
+&& apt-get -y install unzip \
+&& groupadd -g ${container_user_gid} ${container_user_group} \
+&& useradd -u ${container_user_uid} -g ${container_user_gid} -m -s /bin/bash ${container_user}# Set ownership of home directory \
+&& chown -R ${container_user}:${container_user} /home/${container_user} \    
+&& mkdir -p ${loader_path}
 
 # Set environment variable for loader path
 ENV loader_path_env=${loader_path}
