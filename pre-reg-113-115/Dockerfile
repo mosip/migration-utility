@@ -29,8 +29,8 @@ RUN apt-get update \
 && apt-get -y upgrade \
 && apt-get -y install unzip \
 && groupadd -g ${container_user_gid} ${container_user_group} \
-&& useradd -u ${container_user_uid} -g ${container_user_gid} -m -s /bin/bash ${container_user}# Set ownership of home directory \
-&& chown -R ${container_user}:${container_user} /home/${container_user} \    
+&& useradd -u ${container_user_uid} -g ${container_user_gid} -m -s /bin/bash ${container_user} \
+&& chown -R ${container_user}:${container_user} /home/${container_user} \
 && mkdir -p ${loader_path}
 
 # Set environment variable for loader path
