@@ -81,7 +81,7 @@ public class PiiDataEncryptionService {
                 String address = partner.getAddress();
                 String contact = partner.getContactNo();
 
-                if (hasMissingPiiFields(email, address, contact)) {
+                if (isMissingPiiFields(email, address, contact)) {
                     LOGGER.warn("Skipping PII data encryption for Partner ID [{}] due to missing field(s): {}", partnerId, getMissingFields(email, address, contact));
                     skippedPartnerIds.add(partnerId);
                     continue;
@@ -137,7 +137,7 @@ public class PiiDataEncryptionService {
                 String address = partnerH.getAddress();
                 String contact = partnerH.getContactNo();
 
-                if (hasMissingPiiFields(email, address, contact)) {
+                if (isMissingPiiFields(email, address, contact)) {
                     LOGGER.warn("Skipping PII data encryption for PartnerH ID [{}] due to missing field(s): {}", partnerId, getMissingFields(email, address, contact));
                     skippedPartnerHIds.add(partnerId);
                     continue;
@@ -193,7 +193,7 @@ public class PiiDataEncryptionService {
                 String address = contact.getAddress();
                 String phone = contact.getContactNo();
 
-                if (hasMissingPiiFields(email, address, phone)) {
+                if (isMissingPiiFields(email, address, phone)) {
                     LOGGER.warn("Skipping PII data encryption for PartnerContact ID [{}] due to missing field(s): {}", contactId, getMissingFields(email, address, phone));
                     skippedContactIds.add(contactId);
                     continue;
@@ -227,7 +227,7 @@ public class PiiDataEncryptionService {
     /**
      * Checks whether any of the PII fields is null or blank.
      */
-    private boolean hasMissingPiiFields(String email, String address, String contact) {
+    private boolean isMissingPiiFields(String email, String address, String contact) {
         return isBlank(email) || isBlank(address) || isBlank(contact);
     }
 
