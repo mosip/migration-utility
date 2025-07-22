@@ -13,6 +13,7 @@
 	<artifactId>ReEncryptUtility</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Re-Encrypt-Utility</name>
+    <url>https://github.com/mosip/migration-utility</url>
 	<description>Demo project for Spring Boot</description>
 
 	<licenses>

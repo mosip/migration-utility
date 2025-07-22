@@ -9,6 +9,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Migration-Utility</name>
 	<description>Utility</description>
+    <url>https://github.com/mosip/migration-utility</url>
 	<licenses>
 		<license>
 			<name>MPL 2.0</name>
