@@ -1,8 +1,8 @@
-package io.mosip.pms.pii.encryptutility;
+package io.mosip.pms.pii.encrypt;
 
 import io.mosip.kernel.core.logger.spi.Logger;
-import io.mosip.pms.pii.encryptutility.service.PiiDataEncryptionService;
-import io.mosip.pms.pii.encryptutility.util.PMSLogger;
+import io.mosip.pms.pii.encrypt.service.DataEncryptionService;
+import io.mosip.pms.pii.encrypt.util.PMSLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,7 +21,7 @@ public class PartnerPiiDataEncryptUtilityApplication implements CommandLineRunne
     private static final int ERROR_EXIT_CODE = 1;
 
     @Autowired
-    private PiiDataEncryptionService piiDataEncryptionService;
+    private DataEncryptionService dataEncryptionService;
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -37,7 +37,7 @@ public class PartnerPiiDataEncryptUtilityApplication implements CommandLineRunne
 
         try {
             LOGGER.info("Initiating encryption of Partner Pii data...");
-            piiDataEncryptionService.encryptPiiData();
+            dataEncryptionService.encryptData();
             LOGGER.info("Partner Pii data encryption process completed successfully.");
 
         } catch (Exception e) {

@@ -1,4 +1,4 @@
-package io.mosip.pms.pii.encryptutility.service;
+package io.mosip.pms.pii.encrypt.service;
 
 import io.mosip.kernel.core.logger.spi.Logger;
 import io.mosip.pms.common.entity.Partner;
@@ -7,8 +7,8 @@ import io.mosip.pms.common.entity.PartnerH;
 import io.mosip.pms.common.repository.PartnerContactRepository;
 import io.mosip.pms.common.repository.PartnerHRepository;
 import io.mosip.pms.common.repository.PartnerServiceRepository;
-import io.mosip.pms.pii.encryptutility.util.KeyManagerUtil;
-import io.mosip.pms.pii.encryptutility.util.PMSLogger;
+import io.mosip.pms.pii.encrypt.util.KeyManagerUtil;
+import io.mosip.pms.pii.encrypt.util.PMSLogger;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,9 +20,9 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class PiiDataEncryptionService {
+public class DataEncryptionService {
 
-    private static final Logger LOGGER = PMSLogger.getLogger(PiiDataEncryptionService.class);
+    private static final Logger LOGGER = PMSLogger.getLogger(DataEncryptionService.class);
 
     @Autowired
     private PartnerServiceRepository partnerServiceRepository;
@@ -39,20 +39,20 @@ public class PiiDataEncryptionService {
     /**
      * Encrypts all sensitive data for Partner, PartnerH, and PartnerContact records.
      */
-    public void encryptPiiData() {
-        LOGGER.info("PiiDataEncryptionService: encryptPiiData - START");
+    public void encryptData() {
+        LOGGER.info("DataEncryptionService: encryptData - START");
         try {
             List<String> partners = encryptPartnerPiiData();
             List<String> partnerHList = encryptPartnerHPiiData();
             List<String> partnerContacts = encryptPartnerContactPiiData();
 
-            LOGGER.info("PiiDataEncryptionService: Encryption completed - Partner records: {}, PartnerH records: {}, PartnerContact records: {}",
+            LOGGER.info("DataEncryptionService: Encryption completed - Partner records: {}, PartnerH records: {}, PartnerContact records: {}",
                     partners.size(), partnerHList.size(), partnerContacts.size());
         } catch (Exception ex) {
             LOGGER.error("An error occurred while encrypting PII data. Error: {}", ex.getMessage(), ex);
             throw ex;
         } finally {
-            LOGGER.info("PiiDataEncryptionService: encryptPiiData - END");
+            LOGGER.info("DataEncryptionService: encryptData - END");
         }
     }
 
