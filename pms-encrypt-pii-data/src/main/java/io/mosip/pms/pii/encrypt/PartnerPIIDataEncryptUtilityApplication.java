@@ -11,11 +11,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan({ "${mosip.auth.adapter.impl.basepackage}","io.mosip.pms.common.*", "io.mosip.pms.pii.encryptutility.*",
+@ComponentScan({ "${mosip.auth.adapter.impl.basepackage}","io.mosip.pms.common.*", "io.mosip.pms.pii.encrypt.*",
         "io.mosip.kernel.templatemanager.velocity.builder"})
-public class PartnerPiiDataEncryptUtilityApplication implements CommandLineRunner {
+public class PartnerPIIDataEncryptUtilityApplication implements CommandLineRunner {
 
-    private static final Logger LOGGER = PMSLogger.getLogger(PartnerPiiDataEncryptUtilityApplication.class);
+    private static final Logger LOGGER = PMSLogger.getLogger(PartnerPIIDataEncryptUtilityApplication.class);
 
     private static final int SUCCESS_EXIT_CODE = 0;
     private static final int ERROR_EXIT_CODE = 1;
@@ -28,7 +28,7 @@ public class PartnerPiiDataEncryptUtilityApplication implements CommandLineRunne
 
     public static void main(String[] args) {
         LOGGER.info("Starting Partner PII Data Encryption Utility Application...");
-        SpringApplication.run(PartnerPiiDataEncryptUtilityApplication.class, args);
+        SpringApplication.run(PartnerPIIDataEncryptUtilityApplication.class, args);
     }
 
     @Override
@@ -36,12 +36,12 @@ public class PartnerPiiDataEncryptUtilityApplication implements CommandLineRunne
         int exitCode = SUCCESS_EXIT_CODE;
 
         try {
-            LOGGER.info("Initiating encryption of Partner Pii data...");
+            LOGGER.info("Initiating encryption of Partner PII data...");
             dataEncryptionService.encryptData();
-            LOGGER.info("Partner Pii data encryption process completed successfully.");
+            LOGGER.info("Partner PII data encryption process completed successfully.");
 
         } catch (Exception e) {
-            LOGGER.error("Error during partner Pii data encryption: {}", e.getMessage(), e);
+            LOGGER.error("Error during partner PII data encryption: {}", e.getMessage(), e);
             exitCode = ERROR_EXIT_CODE;
         }
 

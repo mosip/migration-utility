@@ -42,9 +42,9 @@ public class DataEncryptionService {
     public void encryptData() {
         LOGGER.info("DataEncryptionService: encryptData - START");
         try {
-            List<String> partners = encryptPartnerPiiData();
-            List<String> partnerHList = encryptPartnerHPiiData();
-            List<String> partnerContacts = encryptPartnerContactPiiData();
+            List<String> partners = encryptPartnerPIIData();
+            List<String> partnerHList = encryptPartnerHPIIData();
+            List<String> partnerContacts = encryptPartnerContactPIIData();
 
             LOGGER.info("DataEncryptionService: Encryption completed - Partner records: {}, PartnerH records: {}, PartnerContact records: {}",
                     partners.size(), partnerHList.size(), partnerContacts.size());
@@ -61,7 +61,7 @@ public class DataEncryptionService {
      *
      * @return List of Partner IDs encrypted successfully.
      */
-    private List<String> encryptPartnerPiiData() {
+    private List<String> encryptPartnerPIIData() {
         LOGGER.info("Starting PII encryption for partner records.");
 
         List<Partner> partnersToEncrypt = partnerServiceRepository.findPartnersWithNullEmailHash();
@@ -81,7 +81,7 @@ public class DataEncryptionService {
                 String address = partner.getAddress();
                 String contact = partner.getContactNo();
 
-                if (isMissingPiiFields(email, address, contact)) {
+                if (isMissingPIIFields(email, address, contact)) {
                     LOGGER.warn("Skipping PII data encryption for Partner ID [{}] due to missing field(s): {}", partnerId, getMissingFields(email, address, contact));
                     skippedPartnerIds.add(partnerId);
                     continue;
@@ -117,7 +117,7 @@ public class DataEncryptionService {
      *
      * @return List of PartnerH IDs encrypted successfully.
      */
-    private List<String> encryptPartnerHPiiData() {
+    private List<String> encryptPartnerHPIIData() {
         LOGGER.info("Starting PII encryption for partner history records.");
 
         List<PartnerH> partnerHList = partnerHRepository.findPartnerHWithNullEmailHash();
@@ -137,7 +137,7 @@ public class DataEncryptionService {
                 String address = partnerH.getAddress();
                 String contact = partnerH.getContactNo();
 
-                if (isMissingPiiFields(email, address, contact)) {
+                if (isMissingPIIFields(email, address, contact)) {
                     LOGGER.warn("Skipping PII data encryption for PartnerH ID [{}] due to missing field(s): {}", partnerId, getMissingFields(email, address, contact));
                     skippedPartnerHIds.add(partnerId);
                     continue;
@@ -173,7 +173,7 @@ public class DataEncryptionService {
      *
      * @return List of PartnerContact IDs encrypted successfully.
      */
-    private List<String> encryptPartnerContactPiiData() {
+    private List<String> encryptPartnerContactPIIData() {
         LOGGER.info("Starting PII encryption for partner contact records.");
 
         List<PartnerContact> contactList = partnerContactRepository.findPartnerContactWithNullEmailHash();
@@ -193,7 +193,7 @@ public class DataEncryptionService {
                 String address = contact.getAddress();
                 String phone = contact.getContactNo();
 
-                if (isMissingPiiFields(email, address, phone)) {
+                if (isMissingPIIFields(email, address, phone)) {
                     LOGGER.warn("Skipping PII data encryption for PartnerContact ID [{}] due to missing field(s): {}", contactId, getMissingFields(email, address, phone));
                     skippedContactIds.add(contactId);
                     continue;
@@ -227,7 +227,7 @@ public class DataEncryptionService {
     /**
      * Checks whether any of the PII fields is null or blank.
      */
-    private boolean isMissingPiiFields(String email, String address, String contact) {
+    private boolean isMissingPIIFields(String email, String address, String contact) {
         return isBlank(email) || isBlank(address) || isBlank(contact);
     }
 
