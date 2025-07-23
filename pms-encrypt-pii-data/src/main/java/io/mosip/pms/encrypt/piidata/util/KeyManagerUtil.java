@@ -1,4 +1,4 @@
-package io.mosip.pms.pii.encrypt.util;
+package io.mosip.pms.encrypt.piidata.util;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -11,8 +11,8 @@ import io.mosip.pms.common.dto.CryptoRequestDto;
 import io.mosip.pms.common.dto.CryptoResponseDto;
 import io.mosip.pms.common.request.dto.RequestWrapperV2;
 import io.mosip.pms.common.util.RestUtil;
-import io.mosip.pms.pii.encrypt.constants.ErrorCode;
-import io.mosip.pms.pii.encrypt.exception.PartnerDataEncryptException;
+import io.mosip.pms.encrypt.piidata.constants.ErrorCode;
+import io.mosip.pms.encrypt.piidata.exception.EncryptPIIDataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -63,20 +63,20 @@ public class KeyManagerUtil {
             );
             if (response == null) {
                 logger.debug("Received null response from API: {}", keyManagerEncryptDataUrl);
-                throw new PartnerDataEncryptException(ErrorCode.API_NULL_RESPONSE.getErrorCode(),
+                throw new EncryptPIIDataException(ErrorCode.API_NULL_RESPONSE.getErrorCode(),
                         ErrorCode.API_NULL_RESPONSE.getErrorMessage());
             }
             if (response.containsKey(PartnerConstants.ERRORS)) {
                 List<Map<String, Object>> errorList = (List<Map<String, Object>>) response.get(PartnerConstants.ERRORS);
                 if (errorList != null && !errorList.isEmpty()) {
                     logger.debug("Error occurred while fetching data: {}", errorList);
-                    throw new PartnerDataEncryptException(String.valueOf(errorList.get(0).get(PartnerConstants.ERRORCODE)),
+                    throw new EncryptPIIDataException(String.valueOf(errorList.get(0).get(PartnerConstants.ERRORCODE)),
                             String.valueOf(errorList.get(0).get(PartnerConstants.ERRORMESSAGE)));
                 }
             }
             if (!response.containsKey(PartnerConstants.RESPONSE) || response.get(PartnerConstants.RESPONSE) == null) {
                 logger.debug("Missing response data in API call: {}", keyManagerEncryptDataUrl);
-                throw new PartnerDataEncryptException(ErrorCode.API_NULL_RESPONSE.getErrorCode(),
+                throw new EncryptPIIDataException(ErrorCode.API_NULL_RESPONSE.getErrorCode(),
                         ErrorCode.API_NULL_RESPONSE.getErrorMessage());
             }
             CryptoResponseDto responseDto = objectMapper.convertValue(
@@ -84,7 +84,7 @@ public class KeyManagerUtil {
             return responseDto.getData();
         } catch (Exception ex) {
             logger.debug("Exception occurred while encrypting data: {}", ex.getMessage(), ex);
-            throw new PartnerDataEncryptException(ErrorCode.ENCRYPTION_FAILED.getErrorCode(), ErrorCode.ENCRYPTION_FAILED.getErrorMessage());
+            throw new EncryptPIIDataException(ErrorCode.ENCRYPTION_FAILED.getErrorCode(), ErrorCode.ENCRYPTION_FAILED.getErrorMessage());
         }
     }
 } 

@@ -1,4 +1,4 @@
-package io.mosip.pms.pii.encrypt.service;
+package io.mosip.pms.encrypt.piidata.service;
 
 import io.mosip.kernel.core.logger.spi.Logger;
 import io.mosip.pms.common.entity.Partner;
@@ -7,8 +7,8 @@ import io.mosip.pms.common.entity.PartnerH;
 import io.mosip.pms.common.repository.PartnerContactRepository;
 import io.mosip.pms.common.repository.PartnerHRepository;
 import io.mosip.pms.common.repository.PartnerServiceRepository;
-import io.mosip.pms.pii.encrypt.util.KeyManagerUtil;
-import io.mosip.pms.pii.encrypt.util.PMSLogger;
+import io.mosip.pms.encrypt.piidata.util.KeyManagerUtil;
+import io.mosip.pms.encrypt.piidata.util.PMSLogger;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,9 +20,9 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class DataEncryptionService {
+public class EncryptPIIDataService {
 
-    private static final Logger LOGGER = PMSLogger.getLogger(DataEncryptionService.class);
+    private static final Logger LOGGER = PMSLogger.getLogger(EncryptPIIDataService.class);
 
     @Autowired
     private PartnerServiceRepository partnerServiceRepository;
@@ -40,19 +40,19 @@ public class DataEncryptionService {
      * Encrypts all sensitive data for Partner, PartnerH, and PartnerContact records.
      */
     public void encryptData() {
-        LOGGER.info("DataEncryptionService: encryptData - START");
+        LOGGER.info("EncryptPIIDataService: encryptData - START");
         try {
             List<String> partners = encryptPartnerPIIData();
             List<String> partnerHList = encryptPartnerHPIIData();
             List<String> partnerContacts = encryptPartnerContactPIIData();
 
-            LOGGER.info("DataEncryptionService: Encryption completed - Partner records: {}, PartnerH records: {}, PartnerContact records: {}",
+            LOGGER.info("EncryptPIIDataService: Encryption completed - Partner records: {}, PartnerH records: {}, PartnerContact records: {}",
                     partners.size(), partnerHList.size(), partnerContacts.size());
         } catch (Exception ex) {
             LOGGER.error("An error occurred while encrypting PII data. Error: {}", ex.getMessage(), ex);
             throw ex;
         } finally {
-            LOGGER.info("DataEncryptionService: encryptData - END");
+            LOGGER.info("EncryptPIIDataService: encryptData - END");
         }
     }
 
@@ -104,10 +104,18 @@ public class DataEncryptionService {
             }
         }
 
-        LOGGER.info("Successfully encrypted PII data for Partner IDs: {}", encryptedPartnerIds);
-        LOGGER.info("Skipped encryption due to missing PII fields for Partner IDs: {}", skippedPartnerIds);
-        LOGGER.info("Failed to encrypt PII data for Partner IDs: {}", encryptionFailedPartnerIds);
-        LOGGER.info("Total partners with successfully encrypted PII data: {}", encryptedPartnerIds.size());
+        if (!encryptedPartnerIds.isEmpty()) {
+            LOGGER.info("Successfully encrypted PII data for Partner IDs: {}", encryptedPartnerIds);
+            LOGGER.info("Total partners with successfully encrypted PII data: {}", encryptedPartnerIds.size());
+        }
+
+        if (!skippedPartnerIds.isEmpty()) {
+            LOGGER.info("Skipped encryption due to missing PII fields for Partner IDs: {}", skippedPartnerIds);
+        }
+
+        if (!encryptionFailedPartnerIds.isEmpty()) {
+            LOGGER.info("Failed to encrypt PII data for Partner IDs: {}", encryptionFailedPartnerIds);
+        }
 
         return encryptedPartnerIds;
     }
@@ -160,10 +168,18 @@ public class DataEncryptionService {
             }
         }
 
-        LOGGER.info("Successfully encrypted PII data for PartnerH IDs: {}", encryptedPartnerHIds);
-        LOGGER.info("Skipped encryption due to missing PII fields for PartnerH IDs: {}", skippedPartnerHIds);
-        LOGGER.info("Failed to encrypt PII data for PartnerH IDs: {}", encryptionFailedPartnerHIds);
-        LOGGER.info("Total PartnerH records with successfully encrypted PII data: {}", encryptedPartnerHIds.size());
+        if (!encryptedPartnerHIds.isEmpty()) {
+            LOGGER.info("Successfully encrypted PII data for PartnerH IDs: {}", encryptedPartnerHIds);
+            LOGGER.info("Total PartnerH records with successfully encrypted PII data: {}", encryptedPartnerHIds.size());
+        }
+
+        if (!skippedPartnerHIds.isEmpty()) {
+            LOGGER.info("Skipped encryption due to missing PII fields for PartnerH IDs: {}", skippedPartnerHIds);
+        }
+
+        if (!encryptionFailedPartnerHIds.isEmpty()) {
+            LOGGER.info("Failed to encrypt PII data for PartnerH IDs: {}", encryptionFailedPartnerHIds);
+        }
 
         return encryptedPartnerHIds;
     }
@@ -216,10 +232,18 @@ public class DataEncryptionService {
             }
         }
 
-        LOGGER.info("Successfully encrypted PII data for PartnerContact IDs: {}", encryptedContactIds);
-        LOGGER.info("Skipped encryption due to missing PII fields for PartnerContact IDs: {}", skippedContactIds);
-        LOGGER.info("Failed to encrypt PII data for PartnerContact IDs: {}", encryptionFailedContactIds);
-        LOGGER.info("Total PartnerContact records with successfully encrypted PII data: {}", encryptedContactIds.size());
+        if (!encryptedContactIds.isEmpty()) {
+            LOGGER.info("Successfully encrypted PII data for PartnerContact IDs: {}", encryptedContactIds);
+            LOGGER.info("Total PartnerContact records with successfully encrypted PII data: {}", encryptedContactIds.size());
+        }
+
+        if (!skippedContactIds.isEmpty()) {
+            LOGGER.info("Skipped encryption due to missing PII fields for PartnerContact IDs: {}", skippedContactIds);
+        }
+
+        if (!encryptionFailedContactIds.isEmpty()) {
+            LOGGER.info("Failed to encrypt PII data for PartnerContact IDs: {}", encryptionFailedContactIds);
+        }
 
         return encryptedContactIds;
     }

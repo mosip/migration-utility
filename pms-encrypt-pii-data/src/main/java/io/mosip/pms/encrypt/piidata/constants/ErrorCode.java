@@ -1,4 +1,4 @@
-package io.mosip.pms.pii.encrypt.constants;
+package io.mosip.pms.encrypt.piidata.constants;
 
 import lombok.Getter;
 
