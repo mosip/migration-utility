@@ -9,6 +9,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Migration-Utility</name>
 	<description>Utility</description>
+    <url>https://github.com/mosip/migration-utility</url>
 	<licenses>
 		<license>
 			<name>MPL 2.0</name>
@@ -45,7 +46,7 @@
 		<dependency>
 		    <groupId>io.mosip.kernel</groupId>
 		    <artifactId>kernel-core</artifactId>
-		    <version>1.2.0.1-SNAPSHOT</version>
+		    <version>1.2.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>io.mosip.kernel</groupId>
