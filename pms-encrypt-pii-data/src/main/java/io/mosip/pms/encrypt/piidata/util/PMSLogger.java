@@ -1,4 +1,4 @@
-package io.mosip.pms.pii.encrypt.util;
+package io.mosip.pms.encrypt.piidata.util;
 
 import io.mosip.kernel.core.logger.spi.Logger;
 import io.mosip.kernel.logger.logback.factory.Logfactory;

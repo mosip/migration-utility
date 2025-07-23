@@ -1,4 +1,4 @@
-package io.mosip.pms.pii.encrypt.config;
+package io.mosip.pms.encrypt.piidata.config;
 
 import io.mosip.kernel.dataaccess.hibernate.config.HibernateDaoConfig;
 import org.springframework.context.annotation.Configuration;
