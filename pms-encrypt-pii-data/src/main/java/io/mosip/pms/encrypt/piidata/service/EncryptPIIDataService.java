@@ -24,6 +24,8 @@ public class EncryptPIIDataService {
 
     private static final Logger LOGGER = PMSLogger.getLogger(EncryptPIIDataService.class);
 
+    private static final String UPDATED_BY = "pms-encrypt-pii-data-utility";
+
     @Autowired
     private PartnerServiceRepository partnerServiceRepository;
 
@@ -91,7 +93,7 @@ public class EncryptPIIDataService {
                 partner.setAddress(keyManagerUtil.encryptData(address));
                 partner.setContactNo(keyManagerUtil.encryptData(contact));
                 partner.setEmailIdHash(DigestUtils.sha256Hex(email.toLowerCase()));
-                partner.setUpdBy(this.getClass().getSimpleName());
+                partner.setUpdBy(UPDATED_BY);
                 partner.setUpdDtimes(Timestamp.valueOf(LocalDateTime.now()));
 
                 partnerServiceRepository.save(partner);
@@ -155,7 +157,7 @@ public class EncryptPIIDataService {
                 partnerH.setAddress(keyManagerUtil.encryptData(address));
                 partnerH.setContactNo(keyManagerUtil.encryptData(contact));
                 partnerH.setEmailIdHash(DigestUtils.sha256Hex(email.toLowerCase()));
-                partnerH.setUpdBy(this.getClass().getSimpleName());
+                partnerH.setUpdBy(UPDATED_BY);
                 partnerH.setUpdDtimes(Timestamp.valueOf(LocalDateTime.now()));
 
                 partnerHRepository.save(partnerH);
@@ -219,7 +221,7 @@ public class EncryptPIIDataService {
                 contact.setAddress(keyManagerUtil.encryptData(address));
                 contact.setContactNo(keyManagerUtil.encryptData(phone));
                 contact.setEmailIdHash(DigestUtils.sha256Hex(email.toLowerCase()));
-                contact.setUpdBy(this.getClass().getSimpleName());
+                contact.setUpdBy(UPDATED_BY);
                 contact.setUpdDtimes(LocalDateTime.now());
 
                 partnerContactRepository.save(contact);

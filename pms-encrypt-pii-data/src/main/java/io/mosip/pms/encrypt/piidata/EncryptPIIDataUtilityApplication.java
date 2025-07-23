@@ -27,7 +27,7 @@ public class EncryptPIIDataUtilityApplication implements CommandLineRunner {
     private ApplicationContext applicationContext;
 
     public static void main(String[] args) {
-        LOGGER.info("Starting Partner PII Data Encryption Utility Application...");
+        LOGGER.info("Starting Encrypt PII Data Utility Application...");
         SpringApplication.run(EncryptPIIDataUtilityApplication.class, args);
     }
 
