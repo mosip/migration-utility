@@ -1,4 +1,20 @@
 # Partner PII Data Encrypt Utility
+### ⚠️ **Important Warning**
+
+Before running the encryption utility, ensure you take a **backup** of the following database tables:
+- `partner`
+- `partner_h`
+- `partner_contact`
+
+This is critical to allow recovery in case of any failure or inconsistency during the encryption process.
+
+---
+
+Additionally, for partners that are registered in the **PMS database** but **not present in Keycloak**, you **must** create the corresponding partner accounts in **Keycloak** **before** running the utility.
+
+> This step is **mandatory** to ensure consistency between systems, because once the data is encrypted, it will no longer be possible to refer to the original (unencrypted) partner details required for creating user accounts in Keycloak.
+
+> **Failure to add the Keycloak user will prevent the partner from logging into the PMS Revamp portal.**
 
 ## Overview
 This module provides a command-line utility to encrypt Personally Identifiable Information (PII) fields in the Partner, PartnerH, and PartnerContact tables of the MOSIP PMS database. It is intended for use during data migration or security upgrades to ensure all sensitive partner data is encrypted at rest.
