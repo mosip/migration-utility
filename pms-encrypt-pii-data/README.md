@@ -25,55 +25,97 @@ This module provides a command-line utility to encrypt Personally Identifiable I
 - Access to the MOSIP PMS database (PostgreSQL)
 - Access to MOSIP KeyManager service
 
-## Build & Run (for developers)
-1. Build and install:
-    ```
-    $ mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
-    ```
-2. Build Docker image:
-    ```
-    $ docker build -f Dockerfile .
-    ```
-3. Run the utility:
-    ```
-    $ java -jar target/partner-pii-data-encrypt-utility-1.0.0-SNAPSHOT.jar
-    ```
+## Developer guide 
 
-### For Spring Boot 3.x
-- Specify the ANT Path Matcher for using existing ANT path patterns:
-  ```
-  spring.mvc.pathmatch.matching-strategy=ANT_PATH_MATCHER
-  ```
-- To unmask values in actuator env URL:
-  ```
-  management.endpoint.env.show-values=ALWAYS
-  ```
-
-## Configuration
+### Configuration
 Edit the [`application.properties`](src/main/resources/application.properties) file to set up:
 - Database connection (`javax.persistence.jdbc.*`)
 - KeyManager URL (`mosip.kernel.keymanager.url`)
 - Keycloak and Auth Adapter settings (if required)
 
-Example (partial):
+#### KeyManager and API URLs
 ```properties
-javax.persistence.jdbc.url=jdbc:postgresql://<host>/<db>
-javax.persistence.jdbc.user=postgres
-javax.persistence.jdbc.password=<password>
-mosip.kernel.keymanager.url=https://<keymanager-url>
+mosip.kernel.keymanager.url=https://dev.mosip.net
+mosip.api.internal.url=https://dev.mosip.net
+keycloak.external.url=https://dev.mosip.net
+mosip.pms.client.secret=REPLACE_WITH_PMS_CLIENT_SECRET
 ```
 
-### Add auth-adapter in the classpath to run the service
+#### Database Configuration
+```properties
+javax.persistence.jdbc.driver=org.postgresql.Driver
+javax.persistence.jdbc.url=jdbc:postgresql://dev.mosip.net/mosip_pms
+javax.persistence.jdbc.user=postgres
+javax.persistence.jdbc.password=REPLACE_WITH_DB_PASSWORD
+javax.persistence.jdbc.schema=pms
 ```
-<dependency>
-    <groupId>io.mosip.kernel</groupId>
-    <artifactId>kernel-auth-adapter</artifactId>
-    <version>${kernel.auth.adapter.version}</version>
-</dependency>
+
+Note: Replace dev URLs and credentials with your environment values.
+
+### Build & Run
+
+#### Build and install the project:
+
+```bash
+cd pms-encrypt-pii-data
+mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
+```
+
+#### Run the utility:
+
+##### Using the packaged JAR:
+```bash
+java -jar target/partner-pii-data-encrypt-utility-1.0.0-SNAPSHOT.jar
+```
+
+##### Or via Spring Boot Maven plugin:
+```bash
+mvn spring-boot:run
 ```
 
 ## Logging
 Logs are output to the console. Adjust logging levels in `application.properties` as needed.
+
+#### Verify Logs and Output
+Expected log sequence on successful run:
+
+- Application startup:
+  > Started PartnerPiiDataEncryptUtilityApplication in XX seconds
+
+- Encryption process:
+  > Initiating encryption of Partner Pii data...
+  > PiiDataEncryptionService: encryptPiiData - START
+
+  > Starting PII encryption for partner records.
+    If records found:
+    > Successfully encrypted PII data for Partner IDs: [P001, P002, ...]
+    > Total partners with successfully encrypted PII data: X
+    If no records found:
+    > No partner records found requiring PII encryption
+
+  > Starting PII encryption for partner history records.
+    > [Similar log structure as above for PartnerH records]
+
+  > Starting PII encryption for partner contact records.
+    > [Similar log structure as above for PartnerContact records]
+
+  > PiiDataEncryptionService: Encryption completed - Partner records: X, PartnerH records: Y, PartnerContact records: Z
+  > Partner PII data encryption process completed successfully.
+  > PiiDataEncryptionService: encryptPiiData - END
+
+This confirms the utility ran correctly and exited.
+
+#### Database verification
+- Verify encryption status by checking the following tables:
+  - `partner`
+  - `partner_h`
+  - `partner_contact`
+
+- For each table:
+  - Fields like `email`, `contact`, and `address` should now contain encrypted values.
+  - The `emailIdHash` field should be populated with a SHA-256 hash of the original email ID.
+
+- Records with missing PII fields should be skipped (see logs).
 
 ## Notes
 - The utility will automatically shut down after processing.
