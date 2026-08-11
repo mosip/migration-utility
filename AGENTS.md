@@ -41,9 +41,9 @@ directory. See the per-module guides for exact commands:
 - [pre-reg-113-115/AGENTS.md](pre-reg-113-115/AGENTS.md)
 
 Neither module has a `src/test` directory in this repository — there are no
-automated unit or integration tests to run. Do not assume `mvn test` will
-exercise any project-specific logic; it only runs whatever tests ship
-transitively with dependencies (none, currently).
+automated unit or integration tests to run. `mvn test` will complete without
+executing any project tests; it does not run tests packaged in transitive
+dependencies.
 
 ## Configuration
 

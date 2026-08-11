@@ -51,11 +51,17 @@ The jar name follows Spring Boot's default `artifactId-version` pattern from
 `pom.xml` (`ReEncryptUtility-1.2.1-SNAPSHOT.jar`); confirm the exact filename
 in `target/` after a build, since `pom.xml` version bumps change it.
 
-Or use the published Docker image, per `README.md`:
+Or use the published Docker image. `README.md` documents this as `docker
+pull mosipdev/pre-reg-113-115:develop` followed by
+`docker run re-encrypt-utility` — that second command runs a different,
+undefined image reference (`re-encrypt-utility:latest`) rather than the
+one just pulled, so following the README literally fails unless that tag
+already happens to exist locally. Run the image that was actually
+pulled instead:
 
 ```shell
 docker pull mosipdev/pre-reg-113-115:develop
-docker run re-encrypt-utility
+docker run --rm mosipdev/pre-reg-113-115:develop
 ```
 
 Building the image locally:
@@ -105,7 +111,8 @@ To run it:
    PGHOST="your-host"
    PGUSER="your-username"
    PGDATABASE="your-database"
-   psql -h "$PGHOST" -U "$PGUSER" -d "$PGDATABASE" -f ArchivalScript.sql
+   psql -h "$PGHOST" -U "$PGUSER" -d "$PGDATABASE" \
+     -f ../db_scripts/ArchivalScript.sql   # run from pre-reg-113-115/; this file lives at the repo root, not here
    ```
 
 This script is destructive and irreversible outside of a database backup —

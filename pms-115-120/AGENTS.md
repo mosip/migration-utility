@@ -60,19 +60,25 @@ invocation pattern used in deployment — note system properties (`-D...`)
 come before `-jar`:
 
 ```shell
-java -jar -Dloader.path="$loader_path_env" \
+java -Dloader.path="$loader_path_env" \
   -Dspring.cloud.config.label="$spring_config_label_env" \
   -Dspring.cloud.config.name="$spring_config_name_env" \
   -Dspring.profiles.active="$active_profile_env" \
   -Dspring.cloud.config.uri="$spring_config_url_env" \
-  Utility-0.0.1-SNAPSHOT.jar
+  -jar Utility-0.0.1-SNAPSHOT.jar
 ```
 
-(That example is copied verbatim from the shipped Dockerfile, including the
-unconventional `-D` flags after `-jar` — Spring Boot's own launcher still
-accepts them there because it re-parses `-D` args itself, but do not copy
-that pattern into new, non-Spring-Boot Java commands: for a plain `java`
-invocation, `-D` flags must precede `-jar` to be recognized by the JVM.)
+**The shipped `pms-115-120/utility/Dockerfile`'s `CMD` actually places
+these same `-D` flags after `-jar`, not before.** That is not a
+Spring-Boot-specific convenience — the JVM launcher stops parsing `-D`
+options once it hits `-jar`, so everything after that point (including
+`-Dloader.path=...`, the Spring Cloud Config properties, etc.) is passed
+to the app as plain positional arguments, not as system properties. This
+looks like a real, pre-existing bug in the Dockerfile that may mean the
+container silently runs without the intended Spring Cloud Config/loader
+settings applied — flag this if asked to review that Dockerfile, and
+always write new `java -jar` examples with `-D` flags before `-jar`,
+matching the corrected order above rather than the shipped file.
 
 Properties needed by this utility are documented upstream in
 [`pms-migration-utility-default.properties`](https://github.com/mosip/mosip-config/blob/develop-v3/pms-migration-utility-default.properties).
